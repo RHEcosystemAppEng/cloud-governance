@@ -1,3 +1,4 @@
+account = ['appeng']
 pipeline {
     options {
         disableConcurrentBuilds()
@@ -17,7 +18,6 @@ pipeline {
         ES_PORT = credentials('haim-cloud-governance-elasticsearch-port')
         contact1 = "ebattat@redhat.com"
         contact2 = "athiruma@redhat.com"
-        account = ['appeng']
     }
     stages {
         stage('Checkout') { // Checkout (git clone ...) the projects repository
