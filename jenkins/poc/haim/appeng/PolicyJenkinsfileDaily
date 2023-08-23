@@ -17,6 +17,7 @@ pipeline {
         ES_PORT = credentials('haim-cloud-governance-elasticsearch-port')
         contact1 = "ebattat@redhat.com"
         contact2 = "athiruma@redhat.com"
+        account = ['appeng']
     }
     stages {
         stage('Checkout') { // Checkout (git clone ...) the projects repository
@@ -32,7 +33,6 @@ pipeline {
         stage('Run Policies the Cost Policies') {
             steps {
                  script {
-                    def account = ['appeng']
                     for (int i = 0; i < account.size(); ++i) {
                         echo "Running for account ${account[i].toUpperCase()}"
                         withCredentials([string(credentialsId: "${account[i]}-aws-access-key-id", variable: 'access_key'),
@@ -48,7 +48,6 @@ pipeline {
         stage('Run Policies the Daily polices') {
             steps {
                  script {
-                    def account = ['appeng']
                     for (int i = 0; i < account.size(); ++i) {
                         echo "Running for account ${account[i].toUpperCase()}"
                         withCredentials([string(credentialsId: "${account[i]}-aws-access-key-id", variable: 'access_key'),
