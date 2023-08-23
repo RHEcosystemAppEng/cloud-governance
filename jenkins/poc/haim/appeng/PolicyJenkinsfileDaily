@@ -48,6 +48,7 @@ pipeline {
                                         string(credentialsId: "${account}-s3-bucket", variable: 's3_bucket')]) {
                         env.account_name = "${account[i]}"
                         sh 'python3 jenkins/poc/haim/common/run_cost_policies.py'
+                                        }
                     }
                 }
             }
@@ -63,6 +64,7 @@ pipeline {
                                         string(credentialsId: "${account}-s3-bucket", variable: 's3_bucket')]) {
                         env.account_name = "${account[i]}"
                         sh 'python3 jenkins/poc/haim/common/run_policies.py'
+                                        }
                     }
                 }
             }
