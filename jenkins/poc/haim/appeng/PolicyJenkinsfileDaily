@@ -46,7 +46,7 @@ pipeline {
                         env.access_key = "ACCESS_KEY_${account[i].toUpperCase()}"
                         env.secret_key = "SECRET_KEY_${account[i].toUpperCase()}"
                         env.s3_bucket = "S3_BUCKET_${account[i].toUpperCase()}"
-                        env.account_name = "${account[i].toUpperCase()}"
+                        env.account_name = "${account[i]}"
                         sh 'python3 jenkins/poc/haim/common/run_cost_policies.py'
                     }
                 }
@@ -61,7 +61,7 @@ pipeline {
                         env.access_key = "ACCESS_KEY_${account[i].toUpperCase()}"
                         env.secret_key = "SECRET_KEY_${account[i].toUpperCase()}"
                         env.s3_bucket = "S3_BUCKET_${account[i].toUpperCase()}"
-                        env.account_name = "${account[i].toUpperCase()}"
+                        env.account_name = "${account[i]}"
                         sh 'python3 jenkins/poc/haim/common/run_policies.py'
                     }
                 }
