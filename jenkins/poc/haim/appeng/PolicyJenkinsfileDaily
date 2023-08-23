@@ -43,9 +43,9 @@ pipeline {
                     def account = ['appeng']
                     for (int i = 0; i < account.size(); ++i) {
                         echo "Testing the ACCESS_KEY_${account[i].toUpperCase()} browser"
-                        env.access_key = "ACCESS_KEY_${account[i].toUpperCase()}"
-                        env.secret_key = "SECRET_KEY_${account[i].toUpperCase()}"
-                        env.s3_bucket = "S3_BUCKET_${account[i].toUpperCase()}"
+                        withCredentials([string(credentialsId: "${account}-aws-access-key-id", variable: 'access_key'),
+                                        string(credentialsId: "${account}-aws-secret-key-id", variable: 'secret_key'),
+                                        string(credentialsId: "${account}-s3-bucket", variable: 's3_bucket')]) {
                         env.account_name = "${account[i]}"
                         sh 'python3 jenkins/poc/haim/common/run_cost_policies.py'
                     }
@@ -58,9 +58,9 @@ pipeline {
                     def account = ['appeng']
                     for (int i = 0; i < account.size(); ++i) {
                         echo "Testing the ACCESS_KEY_${account[i].toUpperCase()} browser"
-                        env.access_key = "ACCESS_KEY_${account[i].toUpperCase()}"
-                        env.secret_key = "SECRET_KEY_${account[i].toUpperCase()}"
-                        env.s3_bucket = "S3_BUCKET_${account[i].toUpperCase()}"
+                        withCredentials([string(credentialsId: "${account}-aws-access-key-id", variable: 'access_key'),
+                                        string(credentialsId: "${account}-aws-secret-key-id", variable: 'secret_key'),
+                                        string(credentialsId: "${account}-s3-bucket", variable: 's3_bucket')]) {
                         env.account_name = "${account[i]}"
                         sh 'python3 jenkins/poc/haim/common/run_policies.py'
                     }
