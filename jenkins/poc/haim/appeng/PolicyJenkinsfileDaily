@@ -1,3 +1,4 @@
+account = ['appeng', 'fsi-partner']
 pipeline {
     options {
         disableConcurrentBuilds()
@@ -10,10 +11,6 @@ pipeline {
         }
     }
     environment {
-        access_key = credentials('appeng-aws-access-key-id')
-        secret_key = credentials('appeng-aws-secret-key-id')
-        s3_bucket = credentials('appeng-s3-bucket')
-        account_name = "appeng"
         AWS_IAM_USER_SPREADSHEET_ID = credentials('cloud-governance-aws-iam-user-spreadsheet-id')
         GOOGLE_APPLICATION_CREDENTIALS = credentials('cloud-governance-google-application-credentials')
         LDAP_HOST_NAME = credentials('cloud-governance-ldap-host-name')
@@ -35,12 +32,32 @@ pipeline {
         }
         stage('Run Policies the Cost Policies') {
             steps {
-                 sh 'python3 jenkins/poc/haim/common/run_cost_policies.py'
+                 script {
+                    for (int i = 0; i < account.size(); ++i) {
+                        echo "Running for account ${account[i].toUpperCase()}"
+                        withCredentials([string(credentialsId: "${account[i]}-aws-access-key-id", variable: 'access_key'),
+                                        string(credentialsId: "${account[i]}-aws-secret-key-id", variable: 'secret_key'),
+                                        string(credentialsId: "${account[i]}-s3-bucket", variable: 's3_bucket')]) {
+                        env.account_name = "${account[i]}"
+                        sh 'python3 jenkins/poc/haim/common/run_cost_policies.py'
+                                        }
+                    }
+                }
             }
         }
         stage('Run Policies the Daily polices') {
             steps {
-                 sh 'python3 jenkins/poc/haim/common/run_policies.py'
+                 script {
+                    for (int i = 0; i < account.size(); ++i) {
+                        echo "Running for account ${account[i].toUpperCase()}"
+                        withCredentials([string(credentialsId: "${account[i]}-aws-access-key-id", variable: 'access_key'),
+                                        string(credentialsId: "${account[i]}-aws-secret-key-id", variable: 'secret_key'),
+                                        string(credentialsId: "${account[i]}-s3-bucket", variable: 's3_bucket')]) {
+                        env.account_name = "${account[i]}"
+                        sh 'python3 jenkins/poc/haim/common/run_policies.py'
+                                        }
+                    }
+                }
             }
         }
         stage('Finalize Cleanup') {
