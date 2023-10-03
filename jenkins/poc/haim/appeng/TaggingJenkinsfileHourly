@@ -1,4 +1,4 @@
-account = ['appeng','fsi-partner']
+account = ['appeng','fsi-partner','fsi-ecosystem']
 pipeline {
     options {
         disableConcurrentBuilds()
